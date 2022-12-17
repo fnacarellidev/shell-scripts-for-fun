@@ -12,17 +12,15 @@ YELLOW='\033[1;33m'
 RED='\033[31m'
 RESETCOLOR='\033[0m'
 ftlockpid=$(top -bn1 | grep ft_lock | awk '{print $1}')
-ftlockrunning=$(top -bn1 | grep ft_lock | wc -l)
-if [[ $ftlockrunning -gt 0 ]]
+ftlockrunning=$(top -bn1 | grep -c ft_lock)
+if (($ftlockrunning > 0))
 then
 	echo -e "Do you really want to ${RED}kill${RESETCOLOR} ft_lock? (Y/n)"
-	read -r shouldkill
-	onlyonechar=$(echo -n $shouldkill | wc -c)
-	while [ -z "$shouldkill" ] || [ "$shouldkill" != "Y" -a "$shouldkill" != "y" -a "$shouldkill" != "n" -a "$shouldkill" != "N" ] || [ "$onlyonechar" != "1" ]
+	read -rsn1 shouldkill
+	while [ "$shouldkill" != "Y" -a "$shouldkill" != "y" -a "$shouldkill" != "n" -a "$shouldkill" != "N" ]
 	do
 		echo -e "Invalid input, try again. (Y/n)"
-		read -r shouldkill
-		onlyonechar=$(echo -n $shouldkill | wc -c)
+		read -rsn1 shouldkill
 	done
 	if [ $shouldkill = "Y" -o $shouldkill = "y" ]
 	then
@@ -35,4 +33,5 @@ then
 	fi
 else
 	echo -e "${YELLOW}ft_lock not running currently.${RESETCOLOR}"
+	exit 1
 fi
