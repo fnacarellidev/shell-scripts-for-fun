@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 <<comment
 This shell scripts kills ft_lock proccess that runs into 42 São Paulo Ubuntu
 that locks your screen from time to time, if you want to be okay and go around
